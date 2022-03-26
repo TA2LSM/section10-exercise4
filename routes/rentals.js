@@ -1,6 +1,7 @@
 const { Rental, validate } = require("../models/rental");
 const { Movie } = require("../models/movie");
 const { Customer } = require("../models/customer");
+const auth = require("../middleware/auth");
 
 const mongoose = require("mongoose"); // Fawn'a parametre olarak geçebilmek için require ettik yoksa gerek yoktu
 //const { default: mongoose } = require("mongoose");
@@ -12,13 +13,13 @@ const router = express.Router();
 //Fawn.init(mongoose);
 
 // Get All Rentals
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   const rentals = await Rental.find().sort("-dateOut");
   res.status(200).send(rentals);
 });
 
 // Create Rental
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 

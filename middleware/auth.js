@@ -12,7 +12,7 @@ function auth(req, res, next) {
   // geçerli bir token değilse hata üretir. Bu nedenle "try-catch" bloğu kullanmak gerekiyor.
   try {
     const decodedPayload = jwt.verify(token, config.get("jwtPrivateKey"));
-    req.user = decodedPayload;
+    req.user = decodedPayload; // bu şekilde token'dan decode edilen "user._id" verisine erişilebilir
     next();
   } catch (ex) {
     res.status(400).send("Unauthorized access! Invalid token.");
